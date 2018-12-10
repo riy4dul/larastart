@@ -6,6 +6,7 @@ import moment from 'moment'
 import { Form, HasError, AlertError } from 'vform'
 
 import swal from 'sweetalert2'
+// import Swal from 'sweetalert2'
 window.swal = swal;
 
 const toast = swal.mixin({
