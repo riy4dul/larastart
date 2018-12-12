@@ -1,7 +1,10 @@
 <template>
     <div class="container">
-        <div class="row mt-5">
-          <div class="col-md-12">
+        <div class="row mt-5" v-if ="!$gate.isAdminOrAuthor()">
+          <not-found></not-found>
+        </div>
+        <div class="row mt-5" v-if ="$gate.isAdminOrAuthor()">
+        <div class="col-md-12">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Users Table</h3>
@@ -63,39 +66,43 @@
           </div>
           <div class="modal-body">
             <div class="form-group">
-                  <input v-model="form.name" type="text" name="name" placeholder="Name" 
-                    class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
-                <has-error :form="form" field="name"></has-error>
-            </div>
+                        <input v-model="form.name" type="text" name="name"
+                            placeholder="Name"
+                            class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
+                        <has-error :form="form" field="name"></has-error>
+                    </div>
 
-            <div class="form-group">
-                  <input v-model="form.email" type="email" name="email" placeholder="Email" 
-                    class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                <has-error :form="form" field="email"></has-error>
-            </div>
+                     <div class="form-group">
+                        <input v-model="form.email" type="email" name="email"
+                            placeholder="Email Address"
+                            class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                        <has-error :form="form" field="email"></has-error>
+                    </div>
 
-            <div class="form-group">
-                  <textarea  v-model="form.bio" name="bio" placeholder="Bio" id="bio" 
-                    class="form-control" :class="{ 'is-invalid': form.errors.has('bio') }"></textarea>
-                <has-error :form="form" field="bio"></has-error>
-            </div>
+                     <div class="form-group">
+                        <textarea v-model="form.bio" name="bio" id="bio"
+                        placeholder="Short bio for user (Optional)"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('bio') }"></textarea>
+                        <has-error :form="form" field="bio"></has-error>
+                    </div>
 
-            <div class="form-group">
-                  <select v-model="form.type" id="type" name="type" 
-                    class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
-                    <option value="">Select User Role</option>
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
-                    <option value="author">Author</option>
-                </select>
-                <has-error :form="form" field="name"></has-error>
-            </div>
 
-            <div class="form-group">
-                  <input v-model="form.password" type="password" name="password" id="password" placeholder="Password" 
-                    class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-                <has-error :form="form" field="password"></has-error>
-            </div>
+                    <div class="form-group">
+                        <select name="type" v-model="form.type" id="type" class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
+                            <option value="">Select User Role</option>
+                            <option value="admin">Admin</option>
+                            <option value="user">Standard User</option>
+                            <option value="author">Author</option>
+                        </select>
+                        <has-error :form="form" field="type"></has-error>
+                    </div>
+
+                    <div class="form-group">
+                        <input v-model="form.password" type="password" name="password" id="password"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
+                        <has-error :form="form" field="password"></has-error>
+                    </div>
+
 
           </div>
           <div class="modal-footer">
@@ -188,26 +195,26 @@
                     })
             },
             loadUsers(){
+              if(this.$gate.isAdmin){
                 axios.get("api/user").then(({data})=>(this.users=data.data));
+              }
             },
-            createUser(){
+             createUser(){
                 this.$Progress.start();
                 this.form.post('api/user')
                 .then(()=>{
                     Fire.$emit('AfterCreate');
-                $('#addNew').modal('hide')
-                toast({
-                          type: 'success',
-                          title: 'User Created successfully'
-                    })
-
-                this.$Progress.finish();
+                    $('#addNew').modal('hide')
+                    toast({
+                        type: 'success',
+                        title: 'User Created in successfully'
+                        })
+                    this.$Progress.finish();
                 })
                 .catch(()=>{
-                    
-                }) 
+                })
             }
-          },
+        },
         created() {
             this.loadUsers();
             Fire.$on('AfterCreate',()=> {

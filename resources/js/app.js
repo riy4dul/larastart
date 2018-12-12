@@ -4,6 +4,10 @@ require('./bootstrap');
 window.Vue = require('vue');
 import moment from 'moment'
 import { Form, HasError, AlertError } from 'vform'
+import Gate from "./Gate"
+Vue.prototype.$gate = new Gate(window.user);
+
+
 
 import swal from 'sweetalert2'
 // import Swal from 'sweetalert2'
@@ -36,7 +40,8 @@ let routes = [
   { path: '/dashboard', component: require('./components/Dashboard.vue') },
   { path: '/developer', component: require('./components/Developer.vue') },
   { path: '/profile', component: require('./components/Profile.vue') },
-  { path: '/users', component: require('./components/Users.vue') }
+  { path: '/users', component: require('./components/Users.vue') },
+
 ]
 
 const router = new VueRouter({
@@ -72,6 +77,12 @@ Vue.component(
     'passport-personal-access-tokens',
     require('./components/passport/PersonalAccessTokens.vue')
 );
+
+Vue.component(
+    'not-found',
+    require('./components/NotFound.vue')
+);
+
 
 const app = new Vue({
     el: '#app',

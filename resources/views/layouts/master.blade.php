@@ -63,6 +63,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+          <p style="color:white;">{{ Auth::user()->type }}</p>
         </div>
       </div>
 
@@ -78,7 +79,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </router-link>
           </li>
-
+          
+          @can('isAdmin')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="fas fa-cog"></i>
@@ -94,14 +96,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <p>Users</p>
                 </router-link>
               </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Inactive Page</p>
-                </a>
-              </li>
             </ul>
           </li>
+          @endcan
           
           
 
@@ -113,7 +110,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </router-link>
           </li>
-
+          
+          @can('isAdmin')
           <li class="nav-item">
           <router-link to="/developer" class="nav-link">
               <i class="fa fa-cog"></i>
@@ -122,6 +120,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </router-link>
           </li>
+          @endcan
 
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -176,6 +175,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
+@auth
+<script>
+  window.user =@json(auth()->user())
+</script>
+@endauth
 
 <!-- jQuery -->
 <script src="/js/app.js"></script>
