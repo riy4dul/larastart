@@ -25,6 +25,8 @@ window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
@@ -41,6 +43,7 @@ let routes = [
   { path: '/developer', component: require('./components/Developer.vue') },
   { path: '/profile', component: require('./components/Profile.vue') },
   { path: '/users', component: require('./components/Users.vue') },
+  { path: '*', component: require('./components/NotFound.vue') }
 
 ]
 
