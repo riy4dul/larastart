@@ -30782,7 +30782,10 @@ var app = new Vue({
   methods: {
     searchit: _.debounce(function () {
       Fire.$emit('searching');
-    }, 2000)
+    }, 2000),
+    printme: function printme() {
+      window.print();
+    }
   }
 });
 
