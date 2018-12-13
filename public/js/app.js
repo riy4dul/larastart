@@ -30723,10 +30723,10 @@ Vue.prototype.$gate = new __WEBPACK_IMPORTED_MODULE_2__Gate__["a" /* default */]
 window.swal = __WEBPACK_IMPORTED_MODULE_3_sweetalert2___default.a;
 
 var toast = __WEBPACK_IMPORTED_MODULE_3_sweetalert2___default.a.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 9000
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 9000
 });
 window.toast = toast;
 
@@ -30742,24 +30742,24 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_4_vue_router__["a" /* default */]);
 
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_5_vue_progressbar___default.a, {
-    color: 'rgb(143, 255, 199)',
-    failedColor: 'red',
-    height: '5px'
+  color: 'rgb(143, 255, 199)',
+  failedColor: 'red',
+  height: '5px'
 });
 
 var routes = [{ path: '/dashboard', component: __webpack_require__(173) }, { path: '/developer', component: __webpack_require__(176) }, { path: '/profile', component: __webpack_require__(179) }, { path: '/users', component: __webpack_require__(185) }, { path: '*', component: __webpack_require__(206) }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_4_vue_router__["a" /* default */]({
-    mode: 'history',
-    routes: routes
+  mode: 'history',
+  routes: routes
 });
 
 Vue.filter('upText', function (text) {
-    return text.toUpperCase();
+  return text.toUpperCase();
 });
 
 Vue.filter('myDate', function (created) {
-    return __WEBPACK_IMPORTED_MODULE_0_moment___default()(created).format('MMMM Do YYYY, h:mm:ss a');
+  return __WEBPACK_IMPORTED_MODULE_0_moment___default()(created).format('MMMM Do YYYY, h:mm:ss a');
 });
 
 window.Fire = new Vue();
@@ -30774,8 +30774,16 @@ Vue.component('passport-personal-access-tokens', __webpack_require__(201));
 Vue.component('not-found', __webpack_require__(206));
 
 var app = new Vue({
-    el: '#app',
-    router: router
+  el: '#app',
+  router: router,
+  data: {
+    search: ''
+  },
+  methods: {
+    searchit: _.debounce(function () {
+      Fire.$emit('searching');
+    }, 2000)
+  }
 });
 
 /***/ }),
@@ -73492,6 +73500,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var _this6 = this;
 
+    Fire.$on('searching', function () {
+      var query = _this6.$parent.search;
+      axios.get('api/findUser?q=' + query).then(function (data) {
+        _this6.users = data.data;
+      }).catch(function () {});
+    });
     this.loadUsers();
     Fire.$on('AfterCreate', function () {
       _this6.loadUsers();
